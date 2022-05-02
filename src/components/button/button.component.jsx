@@ -8,7 +8,7 @@ const buttonTypeClasses = {
 const Button = (props) => {
 	return (
 		<button
-			className={`button-container ${buttonTypeClasses[props.buttonType]}`}
+			className={`button-container ${buttonTypeClasses[props.buttontype]}`}
 			{...props}>
 			{props.children}
 		</button>
