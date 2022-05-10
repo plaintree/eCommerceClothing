@@ -15,12 +15,6 @@ const Navigation = () => {
   const { currentUser } = useContext(UserContext);
   const { isDropdown } = useContext(CartContext);
 
-  const dropdownHandler = () => {
-    if (!isDropdown) {
-      return setIsdropdown(true);
-    }
-    return setIsdropdown(false);
-  };
   return (
     <>
       <nav className='navigation'>
@@ -41,7 +35,7 @@ const Navigation = () => {
               SIGN IN
             </Link>
           )}
-          <CartIcon onClick={dropdownHandler} />
+          <CartIcon />
         </div>
         {isDropdown && <CartDropdown />}
       </nav>
