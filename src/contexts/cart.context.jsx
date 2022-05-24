@@ -1,15 +1,28 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useReducer } from "react";
+import { createAction } from "../utils/reducer/reducer.utils";
 
 export const CartContext = createContext({
-  isDropdown: false,
   setIsdropdown: () => {},
-  cartItems: [],
   addItemToCart: () => {},
   subtractItemFromCart: () => {},
   clearItemFromCart: () => {},
+  cartItems: [],
+  isDropdown: false,
   cartCount: 0,
   cartTotal: 0,
 });
+
+const INITIAL_STATE = {
+  cartItems: [],
+  isDropdown: false,
+  cartCount: 0,
+  cartTotal: 0,
+};
+
+const CART_ACTION_TYPES = {
+  SET_CART_ITEMS: "SET_CART_ITEMS",
+  SET_IS_DROPDOWN: "SET_IS_DROPDOWN",
+};
 
 const addCartItem = (cartItems, productToAdd) => {
   const existCartItem = cartItems.find(
@@ -44,45 +57,60 @@ const subtractCartItem = (cartItems, cartItemToSubtract) => {
 };
 
 const clearCartItem = (cartItems, cartItemToClear) => {
-  const existCartItem = cartItems.find(
-    (cartItem) => cartItem.id === cartItemToClear.id
-  );
+  cartItems.find((cartItem) => cartItem.id === cartItemToClear.id);
 
   return cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
 };
 
-export const CartProvider = ({ children }) => {
-  const [isDropdown, setIsdropdown] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [cartCount, setCartCount] = useState(0);
-  const [cartTotal, setCartTotal] = useState(0);
+const cartReducer = (state, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case "SET_CART_ITEMS":
+      return { ...state, ...payload };
+    case "SET_IS_DROPDOWN":
+      return { ...state, isDropdown: payload };
+    default:
+      throw new Error(`Invalid type of ${type} in cartReducer`);
+  }
+};
 
-  useEffect(() => {
-    const newCartCount = cartItems.reduce(
+export const CartProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE);
+  const { cartItems, cartCount, cartTotal, isDropdown } = state;
+
+  const updateCartItemReducer = (newCartItems) => {
+    const newCartCount = newCartItems.reduce(
       (total, cartItem) => total + cartItem.quantity,
       0
     );
-    setCartCount(newCartCount);
-  }, [cartItems]);
-
-  useEffect(() => {
-    const newCartTotal = cartItems.reduce(
+    const newCartTotal = newCartItems.reduce(
       (total, cartItem) => total + cartItem.quantity * cartItem.price,
       0
     );
-    setCartTotal(newCartTotal);
-  }, [cartItems]);
-
+    dispatch(
+      createAction(CART_ACTION_TYPES.SET_CART_ITEMS, {
+        cartItems: newCartItems,
+        cartTotal: newCartTotal,
+        cartCount: newCartCount,
+      })
+    );
+  };
   const addItemToCart = (productToAdd) => {
-    setCartItems(addCartItem(cartItems, productToAdd));
+    const newCartItems = addCartItem(cartItems, productToAdd);
+    updateCartItemReducer(newCartItems);
   };
   const subtractItemFromCart = (cartItemToSubtract) => {
-    setCartItems(subtractCartItem(cartItems, cartItemToSubtract));
+    const newCartItems = subtractCartItem(cartItems, cartItemToSubtract);
+    updateCartItemReducer(newCartItems);
   };
   const clearItemFromCart = (cartItemToClear) => {
-    setCartItems(clearCartItem(cartItems, cartItemToClear));
+    const newCartItems = clearCartItem(cartItems, cartItemToClear);
+    updateCartItemReducer(newCartItems);
   };
 
+  const setIsdropdown = (bool) => {
+    dispatch(createAction(CART_ACTION_TYPES.SET_IS_DROPDOWN, bool));
+  };
   const value = {
     isDropdown,
     setIsdropdown,
