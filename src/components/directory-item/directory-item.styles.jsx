@@ -9,46 +9,69 @@ export const BackgroundImage = styled.div`
 `;
 
 export const DirectoryItemBody = styled.div`
-  height: 90px;
-  padding: 0 25px;
+  padding: 1rem 2rem;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 1px solid black;
-  background-color: white;
+  border-radius: 10px;
+  background-color: black;
   opacity: 0.7;
   position: absolute;
+  color: white;
 
   h2 {
     font-weight: bold;
     margin: 0 6px 0;
     font-size: 22px;
-    color: #4a4a4a;
   }
 
   p {
     font-weight: lighter;
     font-size: 16px;
   }
+
+  @media screen and (max-width: 545px) {
+    border: unset;
+    background-color: unset;
+    opacity: unset;
+  }
 `;
 export const DirectoryItemContainer = styled.div`
   min-width: 30%;
   height: 240px;
-  flex: 1 1 auto;
+  flex: 1;
   display: flex;
+
   align-items: center;
   justify-content: center;
   border: 1px solid black;
-  margin: 0 7.5px 15px;
+  border-radius: 10px;
+  margin: 1rem;
   overflow: hidden;
+
+  @media screen and (max-width: 545px) {
+    min-width: 80%;
+    flex-direction: column;
+    flex-wrap: no-wrap;
+
+    &:first-child {
+      margin-right: unset;
+    }
+
+    &:last-child {
+      margin-left: unset;
+    }
+  }
 
   &:hover {
     cursor: pointer;
 
     & ${BackgroundImage} {
       transform: scale(1.1);
-      transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
+      transition: transform 3s cubic-bezier(0.25, 0.45, 0.45, 0.95);
     }
 
     & ${DirectoryItemBody} {

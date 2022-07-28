@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { AnimatePresence } from "framer-motion";
 
 import { selectIsDropdown } from "../../store/cart/cart.selector";
 
@@ -28,7 +29,7 @@ const Navigation = () => {
     <>
       <NavigationContainer>
         <LogoContainer to='/'>
-          <img src={Logo} alt='globleclothing' width={100} height={100} />
+          <img src={Logo} alt='globeclothing' width={100} height={100} />
         </LogoContainer>
         <NavLinkContainer>
           <NavLink to='/shop'>SHOP</NavLink>
@@ -42,7 +43,7 @@ const Navigation = () => {
           )}
           <CartIcon />
         </NavLinkContainer>
-        {isDropdown && <CartDropdown />}
+        <AnimatePresence>{isDropdown && <CartDropdown />}</AnimatePresence>
       </NavigationContainer>
       <Outlet />
     </>
