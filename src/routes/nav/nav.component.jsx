@@ -9,12 +9,13 @@ import { signOutStart } from "../../store/user/user.action";
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 
+import Logo from "../../assets/logo.png";
+
 import {
   NavigationContainer,
   NavLinkContainer,
   NavLink,
   LogoContainer,
-  Logo,
 } from "./nav.styles.jsx";
 
 const Navigation = () => {
@@ -27,7 +28,7 @@ const Navigation = () => {
     <>
       <NavigationContainer>
         <LogoContainer to='/'>
-          <Logo />
+          <img src={Logo} alt='globleclothing' width={100} height={100} />
         </LogoContainer>
         <NavLinkContainer>
           <NavLink to='/shop'>SHOP</NavLink>

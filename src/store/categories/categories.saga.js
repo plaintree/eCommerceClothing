@@ -4,7 +4,7 @@ import {
   fetchCategoriesFailed,
   fetchCategoriesSuccess,
 } from "./categories.action";
-import { CATEGORIES_ACTION_TYPE } from "./categories.type";
+import { CATEGORIES_ACTION_TYPES } from "./categories.types";
 import { getCategoriesandDocs } from "../../utils/firebase/firebase.utils";
 
 export function* fetchCategoriesAsync() {
@@ -18,7 +18,7 @@ export function* fetchCategoriesAsync() {
 
 export function* onFetchCategories() {
   yield takeLatest(
-    CATEGORIES_ACTION_TYPE.FETCH_CATEGORIES_START,
+    CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START,
     fetchCategoriesAsync
   );
 }
